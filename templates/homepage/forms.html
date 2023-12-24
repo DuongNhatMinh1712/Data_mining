@@ -1,0 +1,579 @@
+{% load static %}
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+	<title>DataCo - Delivery Time Prediction</title>
+	<meta content='width=device-width, initial-scale=1.0, shrink-to-fit=no' name='viewport' />
+	<link rel="icon" href="{% static 'assets/img/icon.ico'%}" type="image/x-icon"/>
+	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+	<style>
+		.switch {
+		  position: relative;
+		  display: inline-block;
+		  width: 46px;
+		  height: 20px;
+		}
+		
+		.switch input { 
+		  opacity: 0;
+		  width: 0;
+		  height: 0;
+		}
+		
+		.slider {
+		  position: absolute;
+		  cursor: pointer;
+		  top: 0;
+		  left: 0;
+		  right: 0;
+		  bottom: 0;
+		  background-color: #ccc;
+		  -webkit-transition: .4s;
+		  transition: .4s;
+		}
+		
+		.slider:before {
+		  position: absolute;
+		  content: "";
+		  height: 12px;
+		  width: 12px;
+		  left: 4px;
+		  bottom: 4px;
+		  background-color: white;
+		  -webkit-transition: .4s;
+		  transition: .4s;
+		}
+		
+		input:checked + .slider {
+		  background-color: #2196F3;
+		}
+		
+		input:focus + .slider {
+		  box-shadow: 0 0 1px #2196F3;
+		}
+		
+		input:checked + .slider:before {
+		  -webkit-transform: translateX(26px);
+		  -ms-transform: translateX(26px);
+		  transform: translateX(26px);
+		}
+		
+		/* Rounded sliders */
+		.slider.round {
+		  border-radius: 34px;
+		}
+		
+		.slider.round:before {
+		  border-radius: 50%;
+		}
+		</style>
+
+	<!-- Fonts and icons -->
+	<script src="{% static 'assets/js/plugin/webfont/webfont.min.js'%}"></script>
+	<script>
+		WebFont.load({
+			google: {"families":["Lato:300,400,700,900"]},
+			custom: {"families":["Flaticon", "Font Awesome 5 Solid", "Font Awesome 5 Regular", "Font Awesome 5 Brands", "simple-line-icons"], urls: ['../../assets/css/fonts.min.css']},
+			active: function() {
+				sessionStorage.fonts = true;
+			}
+		});
+	</script>
+
+	<!-- CSS Files -->
+	<link rel="stylesheet" href="{% static 'assets/css/bootstrap.min.css' %}">
+	<link rel="stylesheet" href="{% static 'assets/css/atlantis.min.css' %}">
+	<!-- CSS Just for demo purpose, don't include it in your project -->
+	<link rel="stylesheet" href="{% static 'assets/css/demo.css' %}">
+	<link rel="stylesheet" href="{% static 'assets/css/loading.css' %}">
+</head>
+<body>
+	<div class="wrapper sidebar_minimize">
+		<div class="main-header">
+			<!-- Navbar Header -->
+			<nav class="navbar navbar-header navbar-expand-lg" data-background-color="blue2">			
+				<div class="container-fluid">
+					<ul class="navbar-nav topbar-nav align-items-center">
+						<a href="../index.html" class="logo">
+							<img style="height:40px" src="https://firebasestorage.googleapis.com/v0/b/gofooddatabase.appspot.com/o/HomePage%2Flogo.png?alt=media&token=08c673a4-67b8-43d4-bece-ff84510b0a8a" alt="navbar brand" class="navbar-brand">
+						</a>
+					</ul>
+				</div>
+			</nav>
+			<!-- End Navbar -->
+		</div>
+		
+		<div class="main-panel">
+			<div class="content">
+				<div class="page-inner">
+					<div class="row">
+						<div class="col-md-12">
+							<div class="card">
+								<div class="card-header">
+									<div class="card-title">Classication for Loyal Customer</div>
+								</div>
+								<div class="card-body">
+									<div class="row">
+										<div class="col-md-9 col-lg-4">
+											<div class="form-group form-inline">
+												<label for="Year_Birth" class="col-md-3 col-form-label">Year Birth</label>
+												<div class="col-md-9 p-0">
+													<input type="number" id="Year_Birth" name="Year_Birth" required>
+												</div>
+											</div>
+											<div class="form-group form-inline">
+												<label for="Education" class="col-md-3 col-form-label">Education</label>
+												<div class="col-md-9 p-0">
+													<select id="Education" name="Education" class="form-control">
+														<option value="2n cycle">2n Cycle</option>
+														<option value="basic">Basic</option>
+														<option value="graduation">Graduation</option>
+														<option value="master">Master</option>
+														<option value="phD">PhD</option>
+													</select>
+												</div>
+											</div>
+											<div class="form-group form-inline">
+												<label for="Marital_Status" class="col-md-3 col-form-label">Marital status</label>
+												<div class="col-md-9 p-0">
+													<select id="Marital_Status" name="Marital_Status" class="form-control">
+														<option value="Absurd">Absurd</option>
+														<option value="Alone">Alone</option>
+														<option value="Divorced">Divorced</option>
+														<option value="Married">Married</option>
+														<option value="Single">Single</option>
+														<option value="Together">Together</option>
+														<option value="Widow">Widow</option>
+														<option value="YOLO">YOLO</option>
+													</select>
+												</div>
+											</div>
+											<div class="form-group form-inline">
+												<label for="Income" class="col-md-3 col-form-label">Income</label>
+												<div class="col-md-9 p-0">
+													<input type="number" id="Income" name="Income" required>
+												</div>
+											</div>
+											<div class="form-group form-inline">
+												<label for="Kidhome" class="col-md-3 col-form-label">Kid home</label>
+												<div class="col-md-9 p-0">
+													<input type="number" id="Kidhome" name="Kidhome" required>
+												</div>
+											</div>
+											<div class="form-group form-inline">
+												<label for="Teenhome" class="col-md-3 col-form-label">Teen home</label>
+												<div class="col-md-9 p-0">
+													<input type="number" id="Teenhome" name="Teenhome" required>
+												</div>
+											</div>
+											<div class="form-group form-inline">
+												<div class="col-md-3">
+													<label for="Dt_Customer" class="col-form-label">Date become customer</label>
+												</div>
+												<div class="col-md-10 p-0" style="text-align: center">
+													<input type="date" id="Dt_Customer" name="Dt_Customer">
+												</div>
+											</div>
+											<div class="form-group form-inline">
+												<label for="Recency" class="col-md-3 col-form-label">Recency</label>
+												<div class="col-md-9 p-0">
+													<input type="number" id="Recency" name="Recency" required>
+												</div>
+											</div>
+											<div class="form-group form-inline">
+												<label for="Complain" class="col-md-3 col-form-label">Complain time</label>
+												<div class="col-md-9 p-0">
+													<input type="number" id="Complain" name="Complain" required>
+												</div>
+											</div>
+											<div class="form-group form-inline">
+												<label for="MntWines" class="col-md-3 col-form-label">Amount wine</label>
+												<div class="col-md-9 p-0">
+													<input type="number" id="MntWines" name="MntWines" required>
+												</div>
+											</div>
+											<div class="form-group form-inline">
+												<label for="MntFruits" class="col-md-3 col-form-label">Amount fruits</label>
+												<div class="col-md-9 p-0">
+													<input type="number" id="MntFruits" name="MntFruits" required>
+												</div>
+											</div>
+											<div class="form-group form-inline">
+												<label for="MntMeatProducts" class="col-md-3 col-form-label">Amount meat products</label>
+												<div class="col-md-10 p-0" style="text-align: center">
+													<input type="number" id="MntMeatProducts" name="MntMeatProducts" required>
+												</div>
+											</div>
+
+										</div>
+										<div class="col-md-9 col-lg-4">		
+											<div class="form-group form-inline">
+												<label for="MntFishProducts" class="col-md-3 col-form-label">Amount fish products</label>
+												<div class="col-md-10 p-0" style="text-align: center">
+													<input type="number" id="MntFishProducts" name="MntFishProducts" required>
+												</div>
+											</div>
+											<div class="form-group form-inline">
+												<label for="MntSweetProducts" class="col-md-3 col-form-label">Amount sweet products</label>
+												<div class="col-md-10 p-0" style="text-align: center">
+													<input type="number" id="MntSweetProducts" name="MntSweetProducts" required>
+												</div>
+											</div>
+											<div class="form-group form-inline">
+												<label for="MntGoldProds" class="col-md-3 col-form-label">Amount gold products</label>
+												<div class="col-md-10 p-0" style="text-align: center">
+													<input type="number" id="MntGoldProds" name="MntGoldProds" required>
+												</div>
+											</div>
+											<div class="form-group form-inline">
+												<label for="NumDealsPurchases" class="col-md-3 col-form-label">Deal Purchases</label>
+												<div class="col-md-10 p-0" style="text-align: center">
+													<input type="number" id="NumDealsPurchases" name="NumDealsPurchases" required>
+												</div>
+											</div>
+											<div class="form-group form-inline">
+												<label for="AcceptedCmp1" class="col-md-3 col-form-label">Accept Cmp1</label>
+												<div class="col-md-9 p-0">
+													<input type="number" id="AcceptedCmp1" name="AcceptedCmp1" required>
+												</div>
+											</div>
+											<div class="form-group form-inline">
+												<label for="AcceptedCmp2" class="col-md-3 col-form-label">Accept Cmp2</label>
+												<div class="col-md-9 p-0">
+													<input type="number" id="AcceptedCmp2" name="AcceptedCmp2" required>
+												</div>
+											</div>
+											<div class="form-group form-inline">
+												<label for="AcceptedCmp3" class="col-md-3 col-form-label">Accept Cmp3</label>
+												<div class="col-md-9 p-0">
+													<input type="number" id="AcceptedCmp3" name="AcceptedCmp3" required>
+												</div>
+											</div>
+											<div class="form-group form-inline">
+												<label for="AcceptedCmp4" class="col-md-3 col-form-label">Accept Cmp4</label>
+												<div class="col-md-9 p-0">
+													<input type="number" id="AcceptedCmp4" name="AcceptedCmp4" required>
+												</div>
+											</div>
+											<div class="form-group form-inline">
+												<label for="AcceptedCmp5" class="col-md-3 col-form-label">Accept Cmp5</label>
+												<div class="col-md-9 p-0">
+													<input type="number" id="AcceptedCmp5" name="AcceptedCmp5" required>
+												</div>
+											</div>
+											<div class="form-group form-inline">
+												<label for="NumWebPurchases" class="col-md-3 col-form-label">web Purchases</label>
+												<div class="col-md-10 p-0" style="text-align: center">
+													<input type="number" id="NumWebPurchases" name="NumWebPurchases" required>
+												</div>
+											</div>
+											<div class="form-group form-inline">
+												<label for="NumCatalogPurchases" class="col-md-3 col-form-label">Catalog Purchases</label>
+												<div class="col-md-10 p-0" style="text-align: center">
+													<input type="number" id="NumCatalogPurchases" name="NumCatalogPurchases" required>
+												</div>
+											</div>
+											<div class="form-group form-inline">
+												<label for="NumStorePurchases" class="col-md-3 col-form-label">Store Purchases</label>
+												<div class="col-md-10 p-0" style="text-align: center">
+													<input type="number" id="NumStorePurchases" name="NumStorePurchases" required>
+												</div>
+											</div>
+											<div class="form-group form-inline">
+												<label for="NumWebVisitsMonth" class="col-md-3 col-form-label">Time visit web per month</label>
+												<div class="col-md-10 p-0" style="text-align: center">
+													<input type="number" id="NumWebVisitsMonth" name="NumWebVisitsMonth" required>
+												</div>
+											</div>
+
+										</div>
+						
+								<div class="lds-roller" style="margin: auto;"><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div></div>
+								
+								<div id="predict_result" style="margin:40px"></div>
+								<div style="margin:20px"></div>
+								<div class="card-action">
+									<button class="btn btn-primary" id="clear_btn" style="float: right;">Clear</button>
+									<button class="btn btn-danger" id="load_sample_data_btn" style="float: right;margin-right: 10px;"><i class="fa fa-refresh" aria-hidden="true" style="margin-right:10px"></i>Load Sample Data</button>
+									<button class="btn btn-success" id="submit_btn" style="width: 150px; font-weight: bold; float: right;margin-right: 10px;">SUBMIT</button>
+									<label class="switch"> 
+										<input type="checkbox" id="showMultipleAlgorithms">
+										<span class="slider round"></span>
+									</label> 
+									<p style="display:inline; margin-left:10px;font-size: 16px;">Show multiple algorithms and detail</p>
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+			<footer class="footer">
+				<div class="container-fluid">
+					<nav class="pull-left">
+						<ul class="nav">
+							<li class="nav-item">
+								<a class="nav-link" href="https://www.themekita.com">
+									ThemeKita
+								</a>
+							</li>
+							<li class="nav-item">
+								<a class="nav-link" href="#">
+									Help
+								</a>
+							</li>
+							<li class="nav-item">
+								<a class="nav-link" href="#">
+									Licenses
+								</a>
+							</li>
+						</ul>
+					</nav>
+					<div class="copyright ml-auto">
+						2018, made with <i class="fa fa-heart heart text-danger"></i> by <a href="https://www.themekita.com">ThemeKita</a>
+					</div>				
+				</div>
+			</footer>
+		</div>
+	</div>
+	
+	<!--   Core JS Files   -->
+	<script src="{% static 'assets/js/core/jquery.3.2.1.min.js' %}"></script>
+	<script src="{% static 'assets/js/core/popper.min.js' %}"></script>
+	<script src="{% static 'assets/js/core/bootstrap.min.js' %}"></script>
+	<!-- jQuery UI -->
+	<script src="{% static 'assets/js/plugin/jquery-ui-1.12.1.custom/jquery-ui.min.js' %}"></script>
+	<script src="{% static 'assets/js/plugin/jquery-ui-touch-punch/jquery.ui.touch-punch.min.js' %}"></script>
+	
+	<!-- jQuery Scrollbar -->
+	<script src="{% static 'assets/js/plugin/jquery-scrollbar/jquery.scrollbar.min.js' %}"></script>
+	<!-- Atlantis JS -->
+	<script src="{% static 'assets/js/atlantis.min.js' %}"></script>
+	<!-- Atlantis DEMO methods, don't include it in your project! -->
+	<script src="{% static 'assets/js/setting-demo2.js' %}"></script>
+	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+	<script src="/static/assets/js/add_options.js"></script>
+		<!-- select2 -->
+	<link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" rel="stylesheet" />	
+	<script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
+	<script type="text/javascript">
+		$(document).ready(function(){
+			$('#clear_btn').click(()=>{
+				$('#Order_Region').val('');
+				$('#Order_State').val('');
+				$('#Order_City').val('');
+				$('#Order_Country').val('');
+				console.log("test")
+			})
+			$(".form-control").select2({
+  			tags: true
+			});
+			$('.lds-roller').hide();
+			$('#predict_result').hide();
+			$("#submit_btn").click( function()
+			{
+				$('.lds-roller').show();
+				$('#predict_result').hide();
+				var Order_Region = $('#Order_Region').val();
+				var Order_State = $('#Order_State').val();
+				var Order_City = $('#Order_City').val();
+				var Order_Country = $('#Order_Country').val();
+				var Customer_State = $('#Customer_State').val();
+				var Customer_City = $('#Customer_City').val();
+				var Shipping_Mode = $('#Shipping_Mode').val();
+				var Payment_Method = 'DEBIT';
+				var showMultipleAlgorithms = 0;
+				if($('#showMultipleAlgorithms').is(":checked"))
+					showMultipleAlgorithms = 1;
+				if($('#RBG_TRANSFER').is(":checked"))
+					Payment_Method = 'TRANSFER';
+				if($('#RBG_CASH').is(":checked"))
+					Payment_Method = 'CASH';
+				if($('#RBG_PAYMENT').is(":checked"))
+					Payment_Method = 'PAYMENT';
+				var Order_Date = $('#Order_Date').val();
+				var Delivery_Date = $('#Delivery_Date').val();
+				var Delivery_Status = 'Advance shipping';
+				if($('#Late_delivery').is(":checked"))
+					Delivery_Status = 'Late delivery';
+				if($('#Shipping_canceled').is(":checked"))
+					Delivery_Status = 'Shipping canceled';
+				if($('#Shipping_on_time').is(":checked"))
+					Delivery_Status = 'Shipping on time';
+				$.ajax({
+					url: "{% url 'show_result' %}",
+					methed:"GET",
+					data:{'Order_City': Order_City, 'Order_Region':Order_Region, 'Order_Country':Order_Country, 'Delivery_Status':Delivery_Status,
+					'Shipping_Mode':Shipping_Mode, 'Order_Date':Order_Date,'Delivery_Date':Delivery_Date,'Customer_State':Customer_State,
+					'Customer_City':Customer_City, 'Order_State':Order_State, 'Payment_Method':Payment_Method, 'showMultipleAlgorithms':showMultipleAlgorithms },
+					success:function(data)
+					{
+						$('#predict_result').show();
+						$('#predict_result').html(data)
+						$('.lds-roller').hide();
+					},
+					error:function(data)
+					{
+						alert('Please fill out all information before submitting');
+						$('.lds-roller').hide();
+					}
+				});
+			});
+
+			$('#load_sample_data_btn').click( function(){
+				var randomNum = getRndInteger(1,9)
+				if(randomNum == 1)
+				{
+					//1
+					$("#Customer_City").val("Caguas").change();
+					$('#Customer_State').val("PR").change();
+					$("#Order_Region").val("Southeast Asia").change();
+					$('#Order_City').val("Bekasi").change();
+					$('#Order_Country').val("Indonesia").change();
+					$('#Order_State').val("Java Occidental").change();
+					$('#Shipping_Mode').val("Standard Class").change();
+					$('#Advance_shipping').prop('checked',true);
+					$('#RBG_DEBIT').prop('checked',true);
+					$('#Order_Date').val("2022-01-31").change();
+					$('#Delivery_Date').val("2022-02-03").change();
+				}
+				else if(randomNum == 2){
+					// 20
+					$("#Customer_City").val("Caguas").change();
+					$('#Customer_State').val("PR").change();
+					$("#Order_Region").val("South Asia").change();
+					$('#Order_City').val("Jabalpur").change();
+					$('#Order_Country').val("India").change();
+					$('#Order_State').val("Madhya Pradesh").change();
+					$('#Shipping_Mode').val("Standard Class").change();
+					$('#Late_delivery').prop('checked',true);
+					$('#RBG_DEBIT').prop('checked',true);
+					$('#Order_Date').val("2022-01-13").change();
+					$('#Delivery_Date').val("2022-01-15").change();
+				}
+				else if(randomNum == 3){
+					// 21
+					$("#Customer_City").val("Mount Prospect").change();
+					$('#Customer_State').val("IL").change();
+					$("#Order_Region").val("South Asia").change();
+					$('#Order_City').val("Jabalpur").change();
+					$('#Order_Country').val("India").change();
+					$('#Order_State').val("Madhya Pradesh").change();
+					$('#Shipping_Mode').val("Same Day").change();
+					$('#Shipping_on_time').prop('checked',true);
+					$('#RBG_PAYMENT').prop('checked',true);
+					$('#Order_Date').val("2022-01-13").change();
+					$('#Delivery_Date').val("2022-01-13").change();
+				}
+				else if(randomNum == 4){
+					// 729
+					$("#Customer_City").val("New York").change();
+					$('#Customer_State').val("NY").change();
+					$("#Order_Region").val("North Africa").change();
+					$('#Order_City').val("Khouribga").change();
+					$('#Order_Country').val("Marruecos").change();
+					$('#Order_State').val("Chauía-Uardiga").change();
+					$('#Shipping_Mode').val("Standard Class").change();
+					$('#Shipping_on_time').prop('checked',true);
+					$('#RBG_TRANSFER').prop('checked',true);
+					$('#Order_Date').val("2021-10-10").change();
+					$('#Delivery_Date').val("2021-10-16").change();
+				}
+				else if(randomNum == 5){
+					// 729
+					$("#Customer_City").val("New York").change();
+					$('#Customer_State').val("NY").change();
+					$("#Order_Region").val("North Africa").change();
+					$('#Order_City').val("Khouribga").change();
+					$('#Order_Country').val("Marruecos").change();
+					$('#Order_State').val("Chauía-Uardiga").change();
+					$('#Shipping_Mode').val("Standard Class").change();
+					$('#Shipping_on_time').prop('checked',true);
+					$('#RBG_TRANSFER').prop('checked',true);
+					$('#Order_Date').val("2021-10-10").change();
+					$('#Delivery_Date').val("2021-10-16").change();
+				}
+				else if(randomNum == 6){
+					// 729
+					$("#Customer_City").val("Miami").change();
+					$('#Customer_State').val("FL").change();
+					$("#Order_Region").val("Southeast Asia").change();
+					$('#Order_City').val("Ho Chi Minh City").change();
+					$('#Order_Country').val("Vietnam").change();
+					$('#Order_State').val("Ciudad Ho Chi Minh").change();
+					$('#Shipping_Mode').val("Standard Class").change();
+					$('#Late_delivery').prop('checked',true);
+					$('#RBG_PAYMENT').prop('checked',true);
+					$('#Order_Date').val("2020-12-03").change();
+					$('#Delivery_Date').val("2022-12-08").change();
+				}
+				else if(randomNum == 7){
+					// 729
+					$("#Customer_City").val("Germantown").change();
+					$('#Customer_State').val("MD").change();
+					$("#Order_Region").val("Southeast Asia").change();
+					$('#Order_City').val("Ho Chi Minh City").change();
+					$('#Order_Country').val("Vietnam").change();
+					$('#Order_State').val("Ciudad Ho Chi Minh").change();
+					$('#Shipping_Mode').val("Standard Class").change();
+					$('#Shipping_on_time').prop('checked',true);
+					$('#RBG_CASH').prop('checked',true);
+					$('#Order_Date').val("2020-01-24").change();
+					$('#Delivery_Date').val("2022-01-28").change();
+				}
+				else if(randomNum == 8){
+					// 729
+					$("#Customer_City").val("Ventura").change();
+					$('#Customer_State').val("CA").change();
+					$("#Order_Region").val("Eastern Asia").change();
+					$('#Order_City').val("Kowloon").change();
+					$('#Order_Country').val("Hong Kong").change();
+					$('#Order_State').val("Hong Kong").change();
+					$('#Shipping_Mode').val("Same Day").change();
+					$('#Shipping_on_time').prop('checked',true);
+					$('#RBG_CASH').prop('checked',true);
+					$('#Order_Date').val("2020-11-27").change();
+					$('#Delivery_Date').val("2022-11-27").change();
+				}
+				else
+				{
+					//9216
+					$("#Customer_City").val("Richardson").change();
+					$('#Customer_State').val("TX").change();
+					$("#Order_Region").val("Southeast Asia").change();
+					$('#Order_City').val("Ho Chi Minh City").change();
+					$('#Order_Country').val("Vietnam").change();
+					$('#Order_State').val("Ciudad Ho Chi Minh").change();
+					$('#Shipping_Mode').val("Standard Class").change();
+					$('#Advance_shipping').prop('checked',true);
+					$('#RBG_DEBIT').prop('checked',true);
+					$('#Order_Date').val("2022-02-19").change();
+					$('#Delivery_Date').val("2022-02-21").change();
+				}
+				
+			});
+			$('#clear_btn').click( function(){
+				$('#predict_result').hide();
+				$("#Customer_City").val("Customer City").change();
+				$('#Customer_State').val("Customer State").change();
+				$("#Order_Region").val("Order Region").change();
+				$('#Order_City').val("Order City").change();
+				$('#Order_Country').val("Order Country").change();
+				$('#Order_State').val("Order State").change();
+				$('#Shipping_Mode').val("Standard Class").change();
+				$('#Advance_shipping').prop('checked',true);
+				$('#RBG_DEBIT').prop('checked',true);
+				$('#Order_Date').val("").change();
+				$('#Delivery_Date').val("").change();
+			});
+		});
+
+		function getRndInteger(min, max) {
+			return Math.floor(Math.random() * (max - min + 1) ) + min;
+		  }
+	</script>
+		
+	
+</body>
+</html>
