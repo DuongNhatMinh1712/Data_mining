@@ -8,6 +8,8 @@
 	<meta content='width=device-width, initial-scale=1.0, shrink-to-fit=no' name='viewport' />
 	<link rel="icon" href="{% static 'assets/img/icon.ico'%}" type="image/x-icon"/>
 	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+	<!-- jQuery library -->
+	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
 	<style>
 		.switch {
 		  position: relative;
@@ -84,28 +86,84 @@
 
 	<!-- CSS Files -->
 	<link rel="stylesheet" href="{% static 'assets/css/bootstrap.min.css' %}">
-	<link rel="stylesheet" href="{% static 'assets/css/atlantis.min.css' %}">
 	<!-- CSS Just for demo purpose, don't include it in your project -->
 	<link rel="stylesheet" href="{% static 'assets/css/demo.css' %}">
 	<link rel="stylesheet" href="{% static 'assets/css/loading.css' %}">
 </head>
 <body>
-	<div class="wrapper sidebar_minimize">
-		<div class="main-header">
-			<!-- Navbar Header -->
-			<nav class="navbar navbar-header navbar-expand-lg" data-background-color="blue2">			
-				<div class="container-fluid">
-					<ul class="navbar-nav topbar-nav align-items-center">
-						<a href="../index.html" class="logo">
-							<img style="height:40px" src="https://firebasestorage.googleapis.com/v0/b/gofooddatabase.appspot.com/o/HomePage%2Flogo.png?alt=media&token=08c673a4-67b8-43d4-bece-ff84510b0a8a" alt="navbar brand" class="navbar-brand">
-						</a>
-					</ul>
+	<nav class="navbar navbar-light bg-light">
+		<a class="navbar-brand" href="#">
+			Loyal customer classification
+		</a>
+	</nav>
+
+	<div class="card" style="margin: 20px">
+		<div class="card-body">
+			<h5 class="card-title">Input customer information</h5>
+			<div class="row">
+				<div class="col">
+					<div class="mb-3">
+						<label for="Year_Birth">Year Birth</label>
+						<select id="Year_Birth" name="Year_Birth" class="form-control"></select>
+					</div>
+					
+					<div class="mb-3">
+						<label for="Education">Education</label>
+						<select id="Education" name="Education" class="form-control">
+							<option value="2n cycle">2n Cycle</option>
+							<option value="basic">Basic</option>
+							<option value="graduation">Graduation</option>
+							<option value="master">Master</option>
+							<option value="phD">PhD</option>
+						</select>
+					</div>
+
+					<div class="mb-3">
+						<label for="Marital_Status">Marital status</label>
+						<select id="Marital_Status" name="Marital_Status" class="form-control">
+							<option value="Absurd">Absurd</option>
+							<option value="Alone">Alone</option>
+							<option value="Divorced">Divorced</option>
+							<option value="Married">Married</option>
+							<option value="Single">Single</option>
+							<option value="Together">Together</option>
+							<option value="Widow">Widow</option>
+							<option value="YOLO">YOLO</option>
+						</select>
+					</div>
+					
+					<div class="mb-3">
+						<label for="Income">Income</label>
+						<input type="number" id="Income" name="Income" required>
+					</div>
+					
 				</div>
-			</nav>
-			<!-- End Navbar -->
+				<div class="col">
+				  2 of 3
+				</div>
+				<div class="col">
+				  3 of 3
+				</div>
+			  </div>
+			
+			<a style="margin-top:20px" href="#" class="btn btn-primary">Predict</a>
 		</div>
+	</div>
 		
-		<div class="main-panel">
+	<script>
+		// Sử dụng jQuery để thêm các năm vào combobox
+		$(document).ready(function() {
+			var startYear = 1970;
+			var endYear = 2015;
+			var select = $('#Year_Birth');
+	
+			for (var year = startYear; year <= endYear; year++) {
+				var option = '<option value="' + year + '">' + year + '</option>';
+				select.append(option);
+			}
+		});
+	</script>	
+		<!-- <div class="main-panel">
 			<div class="content">
 				<div class="page-inner">
 					<div class="row">
@@ -336,8 +394,10 @@
 				</div>
 			</footer>
 		</div>
-	</div>
 	
+			</div>
+		</div> -->
+	</div>
 	<!--   Core JS Files   -->
 	<script src="{% static 'assets/js/core/jquery.3.2.1.min.js' %}"></script>
 	<script src="{% static 'assets/js/core/popper.min.js' %}"></script>
@@ -359,16 +419,6 @@
 	<script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
 	<script type="text/javascript">
 		$(document).ready(function(){
-			$('#clear_btn').click(()=>{
-				$('#Order_Region').val('');
-				$('#Order_State').val('');
-				$('#Order_City').val('');
-				$('#Order_Country').val('');
-				console.log("test")
-			})
-			$(".form-control").select2({
-  			tags: true
-			});
 			$('.lds-roller').hide();
 			$('#predict_result').hide();
 			$("#submit_btn").click( function()
@@ -419,139 +469,6 @@
 						$('.lds-roller').hide();
 					}
 				});
-			});
-
-			$('#load_sample_data_btn').click( function(){
-				var randomNum = getRndInteger(1,9)
-				if(randomNum == 1)
-				{
-					//1
-					$("#Customer_City").val("Caguas").change();
-					$('#Customer_State').val("PR").change();
-					$("#Order_Region").val("Southeast Asia").change();
-					$('#Order_City').val("Bekasi").change();
-					$('#Order_Country').val("Indonesia").change();
-					$('#Order_State').val("Java Occidental").change();
-					$('#Shipping_Mode').val("Standard Class").change();
-					$('#Advance_shipping').prop('checked',true);
-					$('#RBG_DEBIT').prop('checked',true);
-					$('#Order_Date').val("2022-01-31").change();
-					$('#Delivery_Date').val("2022-02-03").change();
-				}
-				else if(randomNum == 2){
-					// 20
-					$("#Customer_City").val("Caguas").change();
-					$('#Customer_State').val("PR").change();
-					$("#Order_Region").val("South Asia").change();
-					$('#Order_City').val("Jabalpur").change();
-					$('#Order_Country').val("India").change();
-					$('#Order_State').val("Madhya Pradesh").change();
-					$('#Shipping_Mode').val("Standard Class").change();
-					$('#Late_delivery').prop('checked',true);
-					$('#RBG_DEBIT').prop('checked',true);
-					$('#Order_Date').val("2022-01-13").change();
-					$('#Delivery_Date').val("2022-01-15").change();
-				}
-				else if(randomNum == 3){
-					// 21
-					$("#Customer_City").val("Mount Prospect").change();
-					$('#Customer_State').val("IL").change();
-					$("#Order_Region").val("South Asia").change();
-					$('#Order_City').val("Jabalpur").change();
-					$('#Order_Country').val("India").change();
-					$('#Order_State').val("Madhya Pradesh").change();
-					$('#Shipping_Mode').val("Same Day").change();
-					$('#Shipping_on_time').prop('checked',true);
-					$('#RBG_PAYMENT').prop('checked',true);
-					$('#Order_Date').val("2022-01-13").change();
-					$('#Delivery_Date').val("2022-01-13").change();
-				}
-				else if(randomNum == 4){
-					// 729
-					$("#Customer_City").val("New York").change();
-					$('#Customer_State').val("NY").change();
-					$("#Order_Region").val("North Africa").change();
-					$('#Order_City').val("Khouribga").change();
-					$('#Order_Country').val("Marruecos").change();
-					$('#Order_State').val("Chauía-Uardiga").change();
-					$('#Shipping_Mode').val("Standard Class").change();
-					$('#Shipping_on_time').prop('checked',true);
-					$('#RBG_TRANSFER').prop('checked',true);
-					$('#Order_Date').val("2021-10-10").change();
-					$('#Delivery_Date').val("2021-10-16").change();
-				}
-				else if(randomNum == 5){
-					// 729
-					$("#Customer_City").val("New York").change();
-					$('#Customer_State').val("NY").change();
-					$("#Order_Region").val("North Africa").change();
-					$('#Order_City').val("Khouribga").change();
-					$('#Order_Country').val("Marruecos").change();
-					$('#Order_State').val("Chauía-Uardiga").change();
-					$('#Shipping_Mode').val("Standard Class").change();
-					$('#Shipping_on_time').prop('checked',true);
-					$('#RBG_TRANSFER').prop('checked',true);
-					$('#Order_Date').val("2021-10-10").change();
-					$('#Delivery_Date').val("2021-10-16").change();
-				}
-				else if(randomNum == 6){
-					// 729
-					$("#Customer_City").val("Miami").change();
-					$('#Customer_State').val("FL").change();
-					$("#Order_Region").val("Southeast Asia").change();
-					$('#Order_City').val("Ho Chi Minh City").change();
-					$('#Order_Country').val("Vietnam").change();
-					$('#Order_State').val("Ciudad Ho Chi Minh").change();
-					$('#Shipping_Mode').val("Standard Class").change();
-					$('#Late_delivery').prop('checked',true);
-					$('#RBG_PAYMENT').prop('checked',true);
-					$('#Order_Date').val("2020-12-03").change();
-					$('#Delivery_Date').val("2022-12-08").change();
-				}
-				else if(randomNum == 7){
-					// 729
-					$("#Customer_City").val("Germantown").change();
-					$('#Customer_State').val("MD").change();
-					$("#Order_Region").val("Southeast Asia").change();
-					$('#Order_City').val("Ho Chi Minh City").change();
-					$('#Order_Country').val("Vietnam").change();
-					$('#Order_State').val("Ciudad Ho Chi Minh").change();
-					$('#Shipping_Mode').val("Standard Class").change();
-					$('#Shipping_on_time').prop('checked',true);
-					$('#RBG_CASH').prop('checked',true);
-					$('#Order_Date').val("2020-01-24").change();
-					$('#Delivery_Date').val("2022-01-28").change();
-				}
-				else if(randomNum == 8){
-					// 729
-					$("#Customer_City").val("Ventura").change();
-					$('#Customer_State').val("CA").change();
-					$("#Order_Region").val("Eastern Asia").change();
-					$('#Order_City').val("Kowloon").change();
-					$('#Order_Country').val("Hong Kong").change();
-					$('#Order_State').val("Hong Kong").change();
-					$('#Shipping_Mode').val("Same Day").change();
-					$('#Shipping_on_time').prop('checked',true);
-					$('#RBG_CASH').prop('checked',true);
-					$('#Order_Date').val("2020-11-27").change();
-					$('#Delivery_Date').val("2022-11-27").change();
-				}
-				else
-				{
-					//9216
-					$("#Customer_City").val("Richardson").change();
-					$('#Customer_State').val("TX").change();
-					$("#Order_Region").val("Southeast Asia").change();
-					$('#Order_City').val("Ho Chi Minh City").change();
-					$('#Order_Country').val("Vietnam").change();
-					$('#Order_State').val("Ciudad Ho Chi Minh").change();
-					$('#Shipping_Mode').val("Standard Class").change();
-					$('#Advance_shipping').prop('checked',true);
-					$('#RBG_DEBIT').prop('checked',true);
-					$('#Order_Date').val("2022-02-19").change();
-					$('#Delivery_Date').val("2022-02-21").change();
-				}
-				
 			});
 			$('#clear_btn').click( function(){
 				$('#predict_result').hide();
